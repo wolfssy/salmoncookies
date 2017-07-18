@@ -95,6 +95,7 @@ Seatac.randomPeeps();
 Seatac.cookiesPerHour();
 Seatac.render();
 
+///////////////////////////////       center     ///////////////////////
 
 var center= {
   minCust: 11,
