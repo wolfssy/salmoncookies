@@ -4,9 +4,36 @@
     <meta charset='utf-8'>
     <title>Pat's Salmon Cookies </title>
   </head>
+
     <body>
       <img src = "salmon.png" alt="salmon">
+
+      <form id="inventory">
+        <fieldset>
+          <legend>Store Inventory Calculator</legend>
+
+          <label for="name">Location: </label>
+          <input name="name" type="text" />
+
+          <label for="minCust">Minimum Customers Per Hour: </label>
+          <input name="minCust" type="text" />
+
+          <label for="maxCust">Maximum Customers Per Hour: </label>
+          <input name="maxCust" type="text" />
+
+          <label for="avgCook">Average Cookies Per Hour: </label>
+          <input name="avgCook" type="text" size="50" />
+
+          <button type="submit">Create New Inventory!</button>
+        </fieldset>
+      </form>
+
+
+
     <table id='salmon'></table>
+
     <script src='app.js'></script>
+
+
       </body>
     </html>
