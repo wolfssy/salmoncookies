@@ -7,50 +7,134 @@
 // // (methods to calculate customer and cookie totals)
 // // (method to calculate customers per hour)
 //
-var timeOfDay = ['0600','0700', '0800', '0900', '1000', '1100', '1200', '1300', '1400', '1500', '1600', '1700', '1800', '1900', '2000'];
+var timeOfDay = ['Location','0600','0700', '0800', '0900', '1000', '1100', '1200', '1300', '1400', '1500', '1600', '1700', '1800', '1900'];
 
-// /////////////////////////////////       PIKE      ///////////////////////////////////////
+var allSalmon = [];
 
-var pike = {
-  minCust: 23,
-  maxCust: 65,
-  avgCook: 6.3,
-  hourC: [],
-  randomPeeps: function (min,max){
-    return Math.floor(Math.random() * (this.maxCust - this.minCust)) + this.minCust
-  },
-  cookiesPerHour: function(){
-    for(var i = 0; i < timeOfDay.length; i++){
-      var cookiesPer = Math.floor(this.avgCook * this.randomPeeps());
-      this.hourC.push(cookiesPer);
-    }
-    return this.hourC;
-  },
-  cookiesPD: function(){
+var salmonTable = document.getElementById('salmon');
+
+function Salmon(name,minCust, maxCust, avgCook){
+  this.name = name;
+  this.minCust = minCust;
+  this.maxCust = maxCust;
+  this.avgCook = avgCook;
+  allSalmon.push(this);
+  this.randomPeeps = function (min,max){
+       return Math.floor(Math.random() * (this.maxCust - this.minCust)) + this.minCust
+}
+  this.cookiesPD = function(){
     var total = 0
     for(var i = 0; i < this.hourC.length; i++){
       total += this.hourC[i];
     }
     return total;
-  },
-  render: function(){
-    var pikeUl = document.getElementById('pike');
-    for(var i = 0; i < timeOfDay.length; i++) {
-      var liEl = document.createElement('li');
-      liEl.textContent = timeOfDay[i] + ': ' + this.hourC[i] + ' Cookies per hour';
-      pikeUl.appendChild(liEl);
-    }
-    var total = document.getElementById('pike');
-    var liEl = document.createElement('li');
-    liEl.textContent = 'total: ' + this.cookiesPD(total);
-    total.appendChild(liEl);
   }
+  this.cookiesPerHour = function(){
+      for(var i = 0; i < timeOfDay.length; i++){
+        var cookiesPer = Math.floor(this.avgCook * this.randomPeeps());
+        this.hourC.push(cookiesPer);
+      }
+      return this.hourC;
+    }
 
-};
 
-pike.randomPeeps();
-pike.cookiesPerHour();
-pike.render();
+
+  this.render = function() {
+    var trEl = document.createElement('tr');
+
+    var tdEl = document.createElement('td');
+    tdEl.textContent = this.name;
+    trEl.appendChild(tdEl);
+
+    tdEl = document.createElement('td');
+    tdEl.textContent = this.minCust;
+    trEl.appendChild(tdEl);
+
+    tdEl = document.createElement('td');
+    tdEl.textContent = this.maxCust;
+    trEl.appendChild(tdEl);
+
+    tdEl = document.createElement('td');
+    tdEl.textContent = this.avgCook;
+    trEl.appendChild(tdEl);
+
+    salmonTable.appendChild(trEl);
+  }
+}
+
+new Salmon('1st and Pike', 1, 2, 3.4 );
+new Salmon('SeaTac Airport', 3, 24, 1.2);
+new Salmon('Seattle Center', 11, 38, 3.7);
+new Salmon('Capitol Hill', 20, 38, 2.3);
+new Salmon('Alki', 2, 16, 4.6);
+
+function makeHeaderRow(){
+
+  var trEl = document.createElement('tr');
+    for(var i = 0; i < timeOfDay.length; i++){
+      var thEl = document.createElement('th');
+      thEl.textContent = timeOfDay[i];
+      trEl.appendChild(thEl);
+    }
+  salmonTable.appendChild(trEl);
+}
+// function makeRows(){
+//   var
+// }
+
+
+function salmonRows(){
+  for(var i = 0; i < allSalmon.length; i++){
+  allSalmon[i].render();
+  }
+}
+makeHeaderRow();
+salmonRows();
+
+
+
+// /////////////////////////////////       PIKE      ///////////////////////////////////////
+
+// var pike = {
+//   minCust: 23,
+//   maxCust: 65,
+//   avgCook: 6.3,
+//   hourC: [],
+//   randomPeeps: function (min,max){
+//     return Math.floor(Math.random() * (this.maxCust - this.minCust)) + this.minCust
+//   },
+//   cookiesPerHour: function(){
+//     for(var i = 0; i < timeOfDay.length; i++){
+//       var cookiesPer = Math.floor(this.avgCook * this.randomPeeps());
+//       this.hourC.push(cookiesPer);
+//     }
+//     return this.hourC;
+//   },
+//   cookiesPD: function(){
+//     var total = 0
+//     for(var i = 0; i < this.hourC.length; i++){
+//       total += this.hourC[i];
+//     }
+//     return total;
+//   },
+//   render: function(){
+//     var pikeUl = document.getElementById('pike');
+//     for(var i = 0; i < timeOfDay.length; i++) {
+//       var liEl = document.createElement('li');
+//       liEl.textContent = timeOfDay[i] + ': ' + this.hourC[i] + ' Cookies per hour';
+//       pikeUl.appendChild(liEl);
+//     }
+//     var total = document.getElementById('pike');
+//     var liEl = document.createElement('li');
+//     liEl.textContent = 'total: ' + this.cookiesPD(total);
+//     total.appendChild(liEl);
+//   }
+//
+// };
+//
+// pike.randomPeeps();
+// pike.cookiesPerHour();
+// pike.render();
 
 // //////////////////////////////////   SeaTac Airport     ////////////////////////
 //
@@ -226,120 +310,9 @@ pike.render();
 // /////////////////////////////
 
 
-var allSalmon = [];
-
-var salmonTable = document.getElementById('salmon');
-
-function Salmon(name,minCust, maxCust, avgCook){
-  this.name = name;
-  this.minCust = minCust;
-  this.maxCust = maxCust;
-  this.avgCook = avgCook;
-  allSalmon.push(this);
-  this.render = function() {
-    var trEl = document.createElement('tr');
-
-    var tdEl = document.createElement('td');
-    tdEl.textContent = this.name;
-    trEl.appendChild(tdEl);
-
-    tdEl = document.createElement('td');
-    tdEl.textContent = this.minCust;
-    trEl.appendChild(tdEl);
-
-    tdEl = document.createElement('td');
-    tdEl.textContent = this.maxCust;
-    trEl.appendChild(tdEl);
-
-    tdEl = document.createElement('td');
-    tdEl.textContent = this.avgCook;
-    trEl.appendChild(tdEl);
-
-    salmonTable.appendChild(trEl);
-  }
-}
-  new Salmon('1st and Pike', );
-  new Salmon('SeaTac Airport', 3, 24, 1.2);
-  new Salmon('Seattle Center', 11, 38, 3.7);
-  new Salmon('Capitol Hill', 20, 38, 2.3);
-  new Salmon('Alki', 2, 16, 4.6);
 
 
-function makeHeaderRow(){
-  var trEl = document.createElement('tr');
 
-  var thEl = document.createElement('th');
-  thEl.textContent = 'Name';
-  trEl.appendChild(thEl);
-
-  thEl = document.createElement('th');
-  thEl.textContent = '0600';
-  trEl.appendChild(thEl);
-
-  thEl = document.createElement('th');
-  thEl.textContent = '0700';
-  trEl.appendChild(thEl);
-
-  thEl = document.createElement('th');
-  thEl.textContent = '0800';
-  trEl.appendChild(thEl);
-
-  thEl = document.createElement('th');
-  thEl.textContent = '0900';
-  trEl.appendChild(thEl);
-
-  thEl = document.createElement('th');
-  thEl.textContent = '1000';
-  trEl.appendChild(thEl);
-
-  thEl = document.createElement('th');
-  thEl.textContent = '1100';
-  trEl.appendChild(thEl);
-
-  thEl = document.createElement('th');
-  thEl.textContent = '1200';
-  trEl.appendChild(thEl);
-
-  thEl = document.createElement('th');
-  thEl.textContent = '1300';
-  trEl.appendChild(thEl);
-
-  thEl = document.createElement('th');
-  thEl.textContent = '1400';
-  trEl.appendChild(thEl);
-
-  thEl = document.createElement('th');
-  thEl.textContent = '1500';
-  trEl.appendChild(thEl);
-
-  thEl = document.createElement('th');
-  thEl.textContent = '1600';
-  trEl.appendChild(thEl);
-
-  thEl = document.createElement('th');
-  thEl.textContent = '1700';
-  trEl.appendChild(thEl);
-
-  thEl = document.createElement('th');
-  thEl.textContent = '1800';
-  trEl.appendChild(thEl);
-
-  thEl = document.createElement('th');
-  thEl.textContent = '1900';
-  trEl.appendChild(thEl);
-
-  salmonTable.appendChild(trEl);
-}
-
-
-function salmonRows(){
-  for(var i = 0; i < allSalmon.length; i++){
-    allSalmon[i].render();
-  }
-}
-
-makeHeaderRow();
-salmonRows();
 // What could that array for? Why would I need one?  to collect  our data
 
 
